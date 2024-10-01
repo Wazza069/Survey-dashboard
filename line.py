@@ -1,12 +1,20 @@
 import pandas as pd
-import plotly.express as px  # (version 4.7.0 or higher)
-import plotly.graph_objects as go
-from dash import Dash, dcc, html, Input, Output  # pip install dash (version 2.0.0 or higher)
+import plotly.express as px
+import dash
+from dash import dcc 
+from dash import html 
+from dash.dependencies import Input, Output
 
 
-df = pd.read_csv("Dataset/intro_bees.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/LubangaD/beesurveydashboard/refs/heads/main/Dataset/intro_bees.csv")
 
-app = Dash(__name__)
+df = df.groupby(['State', 'ANSI', 'Affected by', 'Year', 'state_code'])[['Pct of Colonies Impacted']].mean()
+df.reset_index(inplace=True)
+print(df[:5])
+
+bee_killers = ["Disease", "Other", "Pesticides", "Pests_excl_Varroa", "Unknown", "Varroa_mites"]
+
+app = dash.Dash(__name__)
 
 app.layout = html.Div([
 
